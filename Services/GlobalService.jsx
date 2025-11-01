@@ -132,9 +132,9 @@
 //     return "Let me ask that again.";
 //   }
 // };
-"use client";
+// "use client";
 
-import { Experlist } from "@/app/(main)/_components/FeaturesAssistants";
+// import { Experlist } from "@/app/(main)/_components/FeaturesAssistants";
 
 /**
  * Aimodle - client wrapper to call /api/ai
@@ -143,38 +143,64 @@ import { Experlist } from "@/app/(main)/_components/FeaturesAssistants";
  * - msg: current user message (string)
  * - conversationHistory: [{role:'user'|'assistant', content: '...'}]
  */
-export const Aimodle = async (topic, coachingOption, msg, conversationHistory = []) => {
-  try {
-    const option = Experlist.find((item) => item.name === coachingOption);
-    if (!option) {
-      console.warn("Aimodle: coaching option not found, falling back to default prompt");
-    }
+// export const Aimodle = async (topic, coachingOption, msg, conversationHistory = []) => {
+//   try {
+//     const option = Experlist.find((item) => item.name === coachingOption);
+//     if (!option) {
+//       console.warn("Aimodle: coaching option not found, falling back to default prompt");
+//     }
 
-    const PROMPT = option?.prompt?.replace("{user_topic}", topic) || `You are a professional mock interviewer for the topic: ${topic}`;
+//     const PROMPT = option?.prompt?.replace("{user_topic}", topic) || `You are a professional mock interviewer for the topic: ${topic}`;
+
+//     const res = await fetch("/api/ai", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         topic,
+//         coachingOption,
+//         msg,
+//         prompt: PROMPT,
+//         conversationHistory
+//       }),
+//     });
+
+//     if (!res.ok) {
+//       console.error("Aimodle: server returned not ok", res.status);
+//       const text = await res.text();
+//       console.error("Aimodle server text:", text);
+//       throw new Error("AI request failed");
+//     }
+
+//     const data = await res.json();
+//     return data.message || "Could you repeat that?";
+//   } catch (err) {
+//     console.error("Aimodle error:", err);
+//     return "Let me ask that again.";
+//   }
+// };
+
+import { Experlist } from "@/app/(main)/_components/FeaturesAssistants";
+
+export async function AiModel(topic, coachingOption, transcript) {
+  try {
+    const option2 = Experlist.find((item) => item.name === coachingOption);
 
     const res = await fetch("/api/ai", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         topic,
-        coachingOption,
-        msg,
-        prompt: PROMPT,
-        conversationHistory
+        option: coachingOption,
+        userText: transcript,
       }),
     });
 
-    if (!res.ok) {
-      console.error("Aimodle: server returned not ok", res.status);
-      const text = await res.text();
-      console.error("Aimodle server text:", text);
-      throw new Error("AI request failed");
-    }
-
     const data = await res.json();
-    return data.message || "Could you repeat that?";
+
+    if (data.error) throw new Error(data.error);
+    return data.reply;
   } catch (err) {
-    console.error("Aimodle error:", err);
-    return "Let me ask that again.";
+    console.error("AiModel Error:", err);
+    return "Error connecting to AI service.";
   }
-};
+}

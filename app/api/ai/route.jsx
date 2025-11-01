@@ -126,106 +126,139 @@
 //   }
 // }
 // app/api/ai/route.js
-import { NextResponse } from "next/server";
+
+
+
+
+
+// import { NextResponse } from "next/server";
+
+// export async function POST(req) {
+//   try {
+//     const { topic = "", coachingOption = "", msg = "", prompt = "", conversationHistory = [] } = await req.json();
+
+//     // Build system prompt - instruct the assistant to always respond as:
+//     // "Ack. Next question?"
+//     const systemPrompt = `${prompt}
+
+// You are conducting a REALISTIC MOCK INTERVIEW about "${topic}".
+// Follow these rules strictly:
+// 1) Start with a very brief acknowledgment (1-3 words) of the user's prior answer (e.g., "Good", "I see", "Interesting").
+// 2) Then ask exactly ONE direct question that follows naturally from the user's answer.
+// 3) Keep the question short and specific (no multi-part questions).
+// 4) Do not repeat previous questions. Build on conversation history.
+// 5) If user answer lacks details, ask for a specific example or result.
+// 6) Respond format exactly as: "Acknowledgment. Next specific question?"
+
+// Return just the short response — no explanations, no meta-text.
+// `;
+
+//     // Compose messages: system, recent history, current user message.
+//     const history = (Array.isArray(conversationHistory) ? conversationHistory : []).slice(-12);
+//     const messages = [
+//       { role: "user", content: prompt },
+//       // Convert your history to message objects in the proper shape
+//       ...history.map(h => ({
+//         role: h.role === "assistant" ? "assistant" : "user",
+//         content: h.content
+//       })),
+//       { role: "assistant", content: msg }
+//     ];
+
+//     // Prefer OpenAI key if present
+//     const OPENAI_API_KEY = process.env.OOPENROUTER_API_KEY;
+//     const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+//     if (OPENAI_API_KEY) {
+//       // Use OpenAI Chat Completions (v1)
+//       const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+//         method: "POST",
+//         headers: {
+//           "Authorization": `Bearer ${OPENAI_API_KEY}`,
+//           "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({
+//           model: "gpt-4o-mini", // fallback candidate; if unavailable change to "gpt-4o" or "gpt-3.5-turbo"
+//           messages,
+//           max_tokens: 120,
+//           temperature: 0.4,
+//           top_p: 0.95
+//         })
+//       });
+
+//       if (!resp.ok) {
+//         const txt = await resp.text();
+//         console.error("OpenAI API error:", resp.status, txt);
+//         return NextResponse.json({ message: "Could you elaborate?" }, { status: 500 });
+//       }
+
+//       const data = await resp.json();
+//       const aiMessage = data.choices?.[0]?.message?.content?.trim() || "Could you tell me more?";
+//       return NextResponse.json({ message: aiMessage });
+
+//     } 
+//     else if (GROQ_API_KEY) {
+//       // Fallback to GROQ API as you had earlier (example)
+//       const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+//         method: "POST",
+//         headers: {
+//           "Authorization": `Bearer ${GROQ_API_KEY}`,
+//           "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({
+//           model: "llama-3.1-8b-instant",
+//           messages,
+//           max_tokens: 100,
+//           temperature: 0.6,
+//           top_p: 0.95
+//         })
+//       });
+
+//       if (!resp.ok) {
+//         const txt = await resp.text();
+//         console.error("GROQ API error:", resp.status, txt);
+//         return NextResponse.json({ message: "Could you elaborate?" }, { status: 500 });
+//       }
+
+//       const data = await resp.json();
+//       const aiMessage = data.choices?.[0]?.message?.content?.trim() || "Could you tell me more?";
+//       return NextResponse.json({ message: aiMessage });
+//     }
+//      else {
+//       console.error("No API key configured (OPENAI_API_KEY or GROQ_API_KEY required).");
+//       return NextResponse.json({ message: "AI backend not configured. Please set OPENAI_API_KEY." }, { status: 500 });
+//     }
+
+//   } catch (err) {
+//     console.error("Server error in /api/ai:", err);
+//     return NextResponse.json({ message: "Please continue — tell me more about that." }, { status: 500 });
+//   }
+// }
+
+import OpenAI from "openai";
 
 export async function POST(req) {
   try {
-    const { topic = "", coachingOption = "", msg = "", prompt = "", conversationHistory = [] } = await req.json();
+    const { topic, option, userText } = await req.json();
 
-    // Build system prompt - instruct the assistant to always respond as:
-    // "Ack. Next question?"
-    const systemPrompt = `${prompt}
+    const openai = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: process.env.OPENROUTER_API_KEY,
+    });
 
-You are conducting a REALISTIC MOCK INTERVIEW about "${topic}".
-Follow these rules strictly:
-1) Start with a very brief acknowledgment (1-3 words) of the user's prior answer (e.g., "Good", "I see", "Interesting").
-2) Then ask exactly ONE direct question that follows naturally from the user's answer.
-3) Keep the question short and specific (no multi-part questions).
-4) Do not repeat previous questions. Build on conversation history.
-5) If user answer lacks details, ask for a specific example or result.
-6) Respond format exactly as: "Acknowledgment. Next specific question?"
+    const response = await openai.chat.completions.create({
+      model: "google/gemini-2.0-flash-exp:free",
+      messages: [
+        { role: "system", content: `You are a mentor for topic: ${topic}, mode: ${option}` },
+        { role: "user", content: userText },
+      ],
+    });
 
-Return just the short response — no explanations, no meta-text.
-`;
-
-    // Compose messages: system, recent history, current user message.
-    const history = (Array.isArray(conversationHistory) ? conversationHistory : []).slice(-12);
-    const messages = [
-      { role: "user", content: prompt },
-      // Convert your history to message objects in the proper shape
-      ...history.map(h => ({
-        role: h.role === "assistant" ? "assistant" : "user",
-        content: h.content
-      })),
-      { role: "assistant", content: msg }
-    ];
-
-    // Prefer OpenAI key if present
-    const OPENAI_API_KEY = process.env.OOPENROUTER_API_KEY;
-    const GROQ_API_KEY = process.env.GROQ_API_KEY;
-
-    if (OPENAI_API_KEY) {
-      // Use OpenAI Chat Completions (v1)
-      const resp = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${OPENAI_API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini", // fallback candidate; if unavailable change to "gpt-4o" or "gpt-3.5-turbo"
-          messages,
-          max_tokens: 120,
-          temperature: 0.4,
-          top_p: 0.95
-        })
-      });
-
-      if (!resp.ok) {
-        const txt = await resp.text();
-        console.error("OpenAI API error:", resp.status, txt);
-        return NextResponse.json({ message: "Could you elaborate?" }, { status: 500 });
-      }
-
-      const data = await resp.json();
-      const aiMessage = data.choices?.[0]?.message?.content?.trim() || "Could you tell me more?";
-      return NextResponse.json({ message: aiMessage });
-
-    } 
-    else if (GROQ_API_KEY) {
-      // Fallback to GROQ API as you had earlier (example)
-      const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${GROQ_API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          messages,
-          max_tokens: 100,
-          temperature: 0.6,
-          top_p: 0.95
-        })
-      });
-
-      if (!resp.ok) {
-        const txt = await resp.text();
-        console.error("GROQ API error:", resp.status, txt);
-        return NextResponse.json({ message: "Could you elaborate?" }, { status: 500 });
-      }
-
-      const data = await resp.json();
-      const aiMessage = data.choices?.[0]?.message?.content?.trim() || "Could you tell me more?";
-      return NextResponse.json({ message: aiMessage });
-    }
-     else {
-      console.error("No API key configured (OPENAI_API_KEY or GROQ_API_KEY required).");
-      return NextResponse.json({ message: "AI backend not configured. Please set OPENAI_API_KEY." }, { status: 500 });
-    }
-
+    return Response.json({
+      reply: response.choices?.[0]?.message?.content || "No response",
+    });
   } catch (err) {
-    console.error("Server error in /api/ai:", err);
-    return NextResponse.json({ message: "Please continue — tell me more about that." }, { status: 500 });
+    console.error("AI Route Error:", err);
+    return Response.json({ error: err.message }, { status: 500 });
   }
 }
