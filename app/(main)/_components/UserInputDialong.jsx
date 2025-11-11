@@ -20,19 +20,23 @@ import { useRouter } from 'next/navigation'
 export  const staff = [
         {
             name: 'Krish',
-            pic: '/agent1.svg'
+            pic: '/agent1.svg',
+            gender: "male"
         },
         {
             name: 'Harshitha',
-            pic: '/agent2.svg'
+            pic: '/agent2.svg',
+            gender: "female"
         },
         {
             name: 'Maveen',
-            pic: '/agent3.svg'
+            pic: '/agent3.svg',
+            gender: "male"
         },
         {
             name: 'latha',
-            pic: '/agent4.svg'
+            pic: '/agent4.svg',
+            gender: "female"
         }
     ];
 

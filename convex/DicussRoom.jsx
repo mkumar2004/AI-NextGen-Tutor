@@ -1,3 +1,4 @@
+import { Conversations } from "openai/resources";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -24,5 +25,17 @@ export const GetDiscussionInfo =query({
     handler:async(ctx,args)=>{
         const result = await ctx.db.get(args.id);
         return result;
+    }
+})
+
+export const UpdateConversation = mutation({
+    args:{
+        id:v.id('Discussroom'),
+        coversation:v.any()
+    },
+    handler:async(ctx,args)=>{
+           await ctx.db.patch(args.id,{
+            coversation:args.coversation
+           })
     }
 })

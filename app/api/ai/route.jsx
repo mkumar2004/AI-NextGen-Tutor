@@ -235,30 +235,96 @@
 //   }
 // }
 
+// import OpenAI from "openai";
+
+// export async function POST(req) {
+//   try {
+//     const { topic, option, userText } = await req.json();
+
+//     const openai = new OpenAI({
+//       baseURL: "https://openrouter.ai/api/v1",
+//       apiKey: process.env.OPENROUTER_API_KEY,
+//     });
+
+//     const response = await openai.chat.completions.create({
+//       model: "google/gemini-2.0-flash-exp:free",
+//       messages: [
+//         { role: "system", content: `You are a mentor for topic: ${topic}, mode: ${option}` },
+//         { role: "user", content: userText },
+//       ],
+//     });
+
+//     return Response.json({
+//       reply: response.choices?.[0]?.message?.content || "No response",
+//     });
+//   } catch (err) {
+//     console.error("AI Route Error:", err);
+//     return Response.json({ error: err.message }, { status: 500 });
+//   }
+// }
+
 import OpenAI from "openai";
 
 export async function POST(req) {
   try {
     const { topic, option, userText } = await req.json();
 
+    // Validate API key exists
+    if (!process.env.OPENROUTER_API_KEY) {
+      console.error("❌ OPENROUTER_API_KEY not found in environment variables");
+      return Response.json(
+        { error: "API key not configured" },
+        { status: 500 }
+      );
+    }
+
+    console.log("🔑 Using API Key:", process.env.OPENROUTER_API_KEY.substring(0, 10) + "...");
+    console.log("📝 Request:", { topic, option, userText: userText.substring(0, 50) + "..." });
+
     const openai = new OpenAI({
       baseURL: "https://openrouter.ai/api/v1",
       apiKey: process.env.OPENROUTER_API_KEY,
+      defaultHeaders: {
+        "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+        "X-Title": "AI Mentor App",
+      },
     });
 
     const response = await openai.chat.completions.create({
       model: "google/gemini-2.0-flash-exp:free",
       messages: [
-        { role: "system", content: `You are a mentor for topic: ${topic}, mode: ${option}` },
-        { role: "user", content: userText },
+        {
+          role: "assistant",
+          content: `You are an expert mentor specializing in "${topic}". Your coaching style is: ${option}. Provide helpful, concise guidance.`,
+        },
+        {
+          role: "user",
+          content: userText,
+        },
       ],
+      max_tokens: 500,
     });
 
-    return Response.json({
-      reply: response.choices?.[0]?.message?.content || "No response",
-    });
+    const reply = response.choices?.[0]?.message?.content || "No response generated";
+    
+    console.log("✅ AI Response:", reply.substring(0, 100) + "...");
+
+    return Response.json({ reply });
   } catch (err) {
-    console.error("AI Route Error:", err);
-    return Response.json({ error: err.message }, { status: 500 });
+    console.error("❌ AI Route Error:", {
+      message: err.message,
+      status: err.status,
+      response: err.response?.data,
+    });
+
+    // Return detailed error for debugging
+    return Response.json(
+      {
+        error: err.message,
+        details: err.response?.data?.error || "Unknown error",
+        status: err.status || 500,
+      },
+      { status: err.status || 500 }
+    );
   }
 }

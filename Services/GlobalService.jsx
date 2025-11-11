@@ -179,10 +179,37 @@
 //   }
 // };
 
+// import { Experlist } from "@/app/(main)/_components/FeaturesAssistants";
+
+// export async function AiModel(topic, coachingOption, transcript) {
+//   try {
+//     const option2 = Experlist.find((item) => item.name === coachingOption);
+
+//     const res = await fetch("/api/ai", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         topic,
+//         option: coachingOption,
+//         userText: transcript,
+//       }),
+//     });
+
+//     const data = await res.json();
+
+//     if (data.error) throw new Error(data.error);
+//     return data.reply;
+//   } catch (err) {
+//     console.error("AiModel Error:", err);
+//     return "Error connecting to AI service.";
+//   }
+// }
 import { Experlist } from "@/app/(main)/_components/FeaturesAssistants";
 
 export async function AiModel(topic, coachingOption, transcript) {
   try {
+    console.log("🚀 Calling AI with:", { topic, coachingOption, transcriptLength: transcript.length });
+
     const option2 = Experlist.find((item) => item.name === coachingOption);
 
     const res = await fetch("/api/ai", {
@@ -195,12 +222,25 @@ export async function AiModel(topic, coachingOption, transcript) {
       }),
     });
 
-    const data = await res.json();
+    console.log("📡 Response status:", res.status);
 
-    if (data.error) throw new Error(data.error);
+    // Check if response is ok before parsing
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("❌ API Error Response:", errorText);
+      throw new Error(`API returned ${res.status}: ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log("✅ Parsed response:", data);
+
+    if (data.error) {
+      throw new Error(`API Error: ${data.error} - ${data.details || ""}`);
+    }
+
     return data.reply;
   } catch (err) {
-    console.error("AiModel Error:", err);
-    return "Error connecting to AI service.";
+    console.error("❌ AiModel Error:", err);
+    return `Error: ${err.message}. Please check your API configuration.`;
   }
 }
