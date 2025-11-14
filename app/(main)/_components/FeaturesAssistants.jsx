@@ -34,7 +34,7 @@ export const Experlist = [
   },
 ];
 
-function FeaturesAssistants() {
+function FeaturesAssistants({Setroomid, Setmeetingdata}) {
   const user = useUser();
 
 
@@ -57,7 +57,7 @@ function FeaturesAssistants() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 md:gap-8">
         {Experlist.map((item, index) => (
           <BlurFade key={item.icon} delay={0.25 + index * 0.05} inView>
-            <UserInputDialong options={item}>
+            <UserInputDialong options={item}  Setroomid={Setroomid} SetData={Setmeetingdata} >
             <div className="p-4 bg-gray-100 rounded-2xl flex flex-col justify-center items-center shadow hover:shadow-md transition">
               <Image
                 src={item.icon}
@@ -70,7 +70,7 @@ function FeaturesAssistants() {
                 {item.name}
               </h2>
             </div>
-            </UserInputDialong>
+            </UserInputDialong >
           </BlurFade>
         ))}
       </div>

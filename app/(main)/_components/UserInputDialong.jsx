@@ -40,7 +40,7 @@ export  const staff = [
         }
     ];
 
-function UserInputDialong({ children, options }) {
+function UserInputDialong({ children, options ,Setroomid,SetData}) {
    
     const [selectStaff, setSelectStaff] = useState();
     const [topic , setTopic] = useState(); 
@@ -55,10 +55,12 @@ function UserInputDialong({ children, options }) {
             coachingOption:options?.name,
             Mentor:selectStaff
         })
-        console.log(res)
+        // console.log(res)
         setLoading(false)
         setOpenDialoge(false)
-        router.push('/dashboard/discussion-room/'+res);
+        Setroomid(res);
+        SetData(selectStaff);
+        // router.push('/dashboard/discussion-room/'+res);
     } 
     return (
         <Dialog open={openDialoge} onOpenChange={setOpenDialoge} >
@@ -73,7 +75,7 @@ function UserInputDialong({ children, options }) {
                             <h2 className='text-black font-bold mt-3'>Select Your Ai Coaching Expert</h2>
                             <div className='grid grid-cols-3 md:grid-cols-6 gap-6 mt-2'>
                                 {staff.map((item, index) => (
-                                    <div key={index} onClick={() => setSelectStaff(item.name)} >
+                                    <div key={index} onClick={() => setSelectStaff(item.name) } >
                                         <Image
                                             src={item.pic}
                                             alt={item.name}
