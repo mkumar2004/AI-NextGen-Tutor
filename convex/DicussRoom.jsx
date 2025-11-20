@@ -31,11 +31,13 @@ export const GetDiscussionInfo =query({
 export const UpdateConversation = mutation({
     args:{
         id:v.id('Discussroom'),
-        coversation:v.any()
+        coversation:v.any(),
+        Feedback: v.optional(v.any()) 
     },
     handler:async(ctx,args)=>{
            await ctx.db.patch(args.id,{
-            coversation:args.coversation
+            coversation:args.coversation,
+            Feedback: args.Feedback ?? []
            })
     }
 })

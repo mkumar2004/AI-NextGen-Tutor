@@ -14,7 +14,8 @@ export default defineSchema({
         coachingOption:v.string(),
         topic:v.string(),
         Mentor:v.string(),
-        coversation:v.optional(v.any())
+        coversation:v.optional(v.any()),
+       Feedback: v.optional(v.any())
     })
 })
 
