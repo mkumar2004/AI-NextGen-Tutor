@@ -11,6 +11,7 @@ import Vapi from '@vapi-ai/web';
 import axios from 'axios';
 export const runtime = "nodejs";
 import { useUser } from '@stackframe/stack'
+import Pdf from '@/app/(main)/_components/Pdf';
 
 function DiscussionRoom() {
   const { roomid } = useParams();
@@ -26,7 +27,7 @@ function DiscussionRoom() {
   const vapiRef = useRef(null);
   const UpdateConversion = useMutation(api.DicussRoom.UpdateConversation)
   const user = useUser();
-  
+
 
 
   useEffect(() => {
@@ -233,7 +234,7 @@ function DiscussionRoom() {
           model: 'nova-2',
           language: 'en-US'
         },
-        
+
         clientMessages: [
           'transcript',
           'hang',
@@ -270,7 +271,7 @@ function DiscussionRoom() {
     }
   };
 
-  const Disconnected = (e) => {
+  const Disconnected = async (e) => {
     e.preventDefault();
 
     if (vapiRef.current) {
@@ -278,36 +279,92 @@ function DiscussionRoom() {
     }
 
     setEnableMic(false);
-    
-    UpdateConversion({
-      id: Discussiondata._id,
-      coversation: messages,
-      Feedback:feedback
-    })
-    feedbackHandler();
+    // const feedbackData = await feedbackHandler();
+
+    // UpdateConversion({
+    //   id: Discussiondata._id,
+    //   coversation: messages,
+    //   Feedback: feedbackData
+    // })
+
     // console.log(' Stopped');
     setInterimText('');
   };
 
-const feedbackHandler = async()=>{
-  try {
-  const res = await axios.post("/api/feedback", {
-    conversation: messages,
-  });
-  
-  setFeedBack(res.data.feedback);
-  
-} catch (err) {
-  console.log(" Feedback API error:", err.response?.data || err);
-}}
+  // const feedbackHandler = async () => {
+  //   try {
+  //     const res = await axios.post("/api/feedback", {
+  //       conversation: messages,
+  //     });
 
+  //     console.log("Feedback API response:", res.data.feedback);
+
+  //     let feedbackData = res.data.feedback;
+
+  //     // If it's a string with code blocks, clean and parse it
+  //     if (typeof feedbackData === 'string') {
+  //       // Remove markdown code blocks
+  //       feedbackData = feedbackData
+  //         .replace(/```json\s*/g, '')
+  //         .replace(/```\s*/g, '')
+  //         .trim();
+
+  //       // Parse to JSON
+  //       feedbackData = JSON.parse(feedbackData);
+  //     }
+
+  //     // Return the entire object (with Feedback wrapper)
+  //     return feedbackData;
+
+  //   } catch (err) {
+  //     console.log("Feedback API error:", err.response?.data || err);
+  //     return null;
+  //   }
+  // };
 
   return (
 
     <div
     >
-      <h2 className='text-lg font-bold'>{Discussiondata?.coachingOption}</h2>
-       <h2 className='text-lg font-bold'>{Discussiondata?.topic}</h2>
+      <div className="relative w-full flex justify-between items-start">
+        {/* Card */}
+        <div className="w-64 px-4 py-3 rounded-xl bg-gradient-to-r from-[#6a11cb] to-[#ff4ecb] shadow-sm overflow-hidden relative">
+          {/* Large transparent background icon (center) */}
+          <svg
+            className="absolute top-1/2 left-1/2 w-16 h-16 -translate-x-1/2 -translate-y-1/2 opacity-10"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2l2.39 6.91h7.27l-5.88 4.28 2.25 6.81L12 15.82 6.97 20.1l2.25-6.81-5.88-4.28h7.27L12 2z" />
+          </svg>
+
+          {/* Small AI/star icon in top-right corner */}
+          <svg
+            className="absolute top-2 right-2 w-6 h-6 opacity-20"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2l2.39 6.91h7.27l-5.88 4.28 2.25 6.81L12 15.82 6.97 20.1l2.25-6.81-5.88-4.28h7.27L12 2z" />
+          </svg>
+
+          {/* Text content */}
+          <p className="relative text-base font-bold text-white">
+            {Discussiondata?.coachingOption}
+          </p>
+          <p className="relative text-xs text-white/90">
+            {Discussiondata?.topic}
+          </p>
+        </div>
+
+        {/* PDF button outside card, aligned to right */}
+        <div className="flex items-start">
+          <Pdf message={messages} />
+        </div>
+      </div>
+
+
+
+
       {/* Microphone Permission Warning */}
       {micPermission === false && (
         <div className='mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg'>
@@ -393,6 +450,7 @@ const feedbackHandler = async()=>{
         </div>
 
         <div className='h-[60vh] bg-gray-100 rounded-4xl border flex flex-col overflow-hidden'>
+
           <div className='p-5 border-b bg-white flex justify-between items-center'>
             <h2 className='font-bold'>Live Transcript</h2>
             {enablemic && (

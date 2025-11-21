@@ -29,8 +29,6 @@ export async function POST(req) {
       messages: [{ role: "user", content: PROMOT }],
     });
 
-    console.log(" AI Raw Response:", completion); 
-
     const content =
       completion?.choices?.[0]?.message?.content || "No response";
 

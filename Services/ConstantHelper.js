@@ -11,7 +11,6 @@ export const FEEDBACK_PROMOT = `{{converstion}}
       technicalSkills: number,
       communication: number,
       problemSolving: number,
-      experience: number,
       },
       summary: 3 lines,
       improvements: one line,
