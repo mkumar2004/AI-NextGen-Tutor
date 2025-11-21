@@ -25,7 +25,7 @@ export async function POST(req) {
     });
 
     const completion = await openai.chat.completions.create({
-      model: "google/gemini-2.0-flash-exp:free",
+      model: "x-ai/grok-4.1-fast:free",
       messages: [{ role: "user", content: PROMOT }],
     });
 

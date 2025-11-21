@@ -19,7 +19,7 @@ function DiscussionRoom() {
   const [expert, setExpert] = useState();
   const [enablemic, setEnableMic] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [feedback, setFeedBack] = useState([]);
+  const [feedback, setFeedBack] = useState(false);
   const [interimText, setInterimText] = useState('');
   const [micPermission, setMicPermission] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -27,7 +27,7 @@ function DiscussionRoom() {
   const vapiRef = useRef(null);
   const UpdateConversion = useMutation(api.DicussRoom.UpdateConversation)
   const user = useUser();
-
+  
 
 
   useEffect(() => {
@@ -279,6 +279,7 @@ function DiscussionRoom() {
     }
 
     setEnableMic(false);
+    setFeedBack(true);
     // const feedbackData = await feedbackHandler();
 
     // UpdateConversion({
@@ -324,8 +325,7 @@ function DiscussionRoom() {
 
   return (
 
-    <div
-    >
+    <div>
       <div className="relative w-full flex justify-between items-start">
         {/* Card */}
         <div className="w-64 px-4 py-3 rounded-xl bg-gradient-to-r from-[#6a11cb] to-[#ff4ecb] shadow-sm overflow-hidden relative">
@@ -358,7 +358,10 @@ function DiscussionRoom() {
 
         {/* PDF button outside card, aligned to right */}
         <div className="flex items-start">
-          <Pdf message={messages} />
+          {/* {feedback && messages.length > 0 && (
+            <Pdf message={messages} Discoussdata={Discussiondata} />
+          )} */}
+              <Pdf message={messages} Discoussdata={Discussiondata} />
         </div>
       </div>
 
