@@ -103,14 +103,16 @@ export default function Home() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-12">
           <Button
-            onClick={HandleNewState}
+            
             className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-xl shadow-[0_0_40px_rgba(59,130,246,0.6)] hover:scale-105 transition-all"
           >
-            Start Practicing
+            Getting Started
           </Button>
 
-          <Button className="bg-white/10 backdrop-blur-sm text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-xl hover:bg-white/20 hover:scale-105 transition-all">
-            Watch Demo
+          <Button 
+            onClick={HandleNewState}
+            className="bg-white/10 backdrop-blur-sm text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-xl hover:bg-white/20 hover:scale-105 transition-all">
+            Demo
           </Button>
         </div>
 

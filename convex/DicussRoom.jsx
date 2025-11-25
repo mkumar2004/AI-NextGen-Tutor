@@ -41,3 +41,9 @@ export const UpdateConversation = mutation({
            })
     }
 })
+
+export const Feedback = query({
+    handler:async(ctx)=>{
+        return await ctx.db.query("Discussroom").collect()
+    }
+})

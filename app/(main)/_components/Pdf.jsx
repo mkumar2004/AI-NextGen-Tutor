@@ -56,65 +56,188 @@ function Pdf({ message, Discoussdata }) {
     }
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF("p", "pt", "a4");
-    const primaryColor = "#2563eb"; 
-    const grey = "#6b7280";
-    const pageWidth = doc.internal.pageSize.width;
 
-    doc.setFillColor(primaryColor);
-    doc.rect(0, 0, pageWidth, 70, "F");
-    doc.setFontSize(22);
-    doc.setTextColor("white");
-    doc.text("NextGen Tutor – AI Feedback Report", 30, 45);
-
-    let y = 100;
-
-    doc.setFontSize(16);
-    doc.setTextColor(primaryColor);
-    doc.text("Recommended:", 30, y);
-    doc.setFontSize(12);
-    doc.setTextColor("black");
-    doc.text(doc.splitTextToSize(jsonData.Feedback.Recommended, 540), 30, y + 20);
-
-    y += 80;
-    doc.setFontSize(16);
-    doc.setTextColor(primaryColor);
-    doc.text("Improvements:", 30, y);
-    doc.setFontSize(12);
-    doc.setTextColor("black");
-    doc.text(doc.splitTextToSize(jsonData.Feedback.improvements, 540), 30, y + 20);
-
-    y += 80;
-    doc.setFontSize(16);
-    doc.setTextColor(primaryColor);
-    doc.text("Summary:", 30, y);
-    doc.setFontSize(12);
-    doc.setTextColor("black");
-    doc.text(doc.splitTextToSize(jsonData.Feedback.summary, 540), 30, y + 20);
-
-    y += 100;
-
-    autoTable(doc, {
-      startY: y,
-      headStyles: { fillColor: primaryColor },
-      head: [["Metric", "Score"]],
-      body: Object.entries(jsonData.Feedback.rating).map(([key, val]) => [key, val]),
-    });
-
-    const pageCount = doc.internal.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      const footerY = doc.internal.pageSize.height - 20;
-      doc.setFontSize(10);
-      doc.setTextColor(grey);
-      doc.text(`NextGen Tutor • AI Evaluation Report • Page ${i}/${pageCount}`, 30, footerY);
+const loadImageAsBase64 = (url) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/jpeg"));
+      };
+      img.onerror = () => reject("Image load failed");
+      img.src = url;
+    } catch (err) {
+      reject(err);
     }
+  });
+};
 
-    doc.save("feedback-report.pdf");
+const generatePDF = async () => {
+  const doc = new jsPDF("p", "pt", "a4");
+
+  /* -----------------------------
+      GLOBAL LAYOUT SETTINGS  
+  ------------------------------ */
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+  const margin = 40;
+  const contentWidth = pageWidth - margin * 2;
+
+  // Set consistent font globally
+  doc.setFont("times", "normal");
+
+  const colors = {
+    primary: "#1f4eb8",
+    border: "#d4d4d4",
+    textDark: "#1a1a1a",
+    textLight: "#5a5a5a",
+    white: "#ffffff"
   };
 
+  /* -----------------------------
+           HEADER SECTION
+  ------------------------------ */
+  const headerHeight = 75;
+  doc.setFillColor(31, 78, 184);
+  doc.rect(0, 0, pageWidth, headerHeight, "F");
 
+  doc.setFontSize(24);
+  doc.setFont("times", "bold");
+  doc.setTextColor("#ffffff");
+  doc.text("AI Feedback Report", margin, 45);
+
+  doc.setFontSize(12);
+  doc.setFont("times", "italic");
+  doc.text("NextGen Tutor", margin, 60);
+
+  let y = headerHeight + 35; // Start content lower to give breathing room
+
+  /* -----------------------------
+          CARD COMPONENT
+  ------------------------------ */
+  const drawCard = (x, y, width, height) => {
+    doc.setFillColor(colors.white);
+    doc.roundedRect(x, y, width, height, 8, 8, "F");
+
+    doc.setDrawColor(colors.border);
+    doc.setLineWidth(0.8);
+    doc.roundedRect(x, y, width, height, 8, 8, "S");
+  };
+
+  /* -----------------------------
+           USER DETAILS
+  ------------------------------ */
+  const cardHeight = 90;
+  const cardWidth = (contentWidth - 20) / 2;
+
+  drawCard(margin, y, cardWidth, cardHeight);
+  doc.setFontSize(14);
+  doc.setFont("times", "bold");
+  doc.setTextColor(colors.primary);
+  doc.text("User Details", margin + 15, y + 25);
+
+  doc.setFontSize(11);
+  doc.setFont("times", "normal");
+  doc.setTextColor(colors.textDark);
+  doc.text(`Name: ${user?.displayName || "Unknown User"}`, margin + 15, y + 47);
+
+  doc.setFontSize(10);
+  doc.setTextColor(colors.textLight);
+  doc.text(`Email: ${user?.primaryEmail || "No Email"}`, margin + 15, y + 65);
+
+  /* -----------------------------
+          MENTOR DETAILS
+  ------------------------------ */
+  const mentorX = margin + cardWidth + 20;
+
+  drawCard(mentorX, y, cardWidth, cardHeight);
+  doc.setFontSize(14);
+  doc.setFont("times", "bold");
+  doc.setTextColor(colors.primary);
+  doc.text("Mentor Details", mentorX + 15, y + 25);
+
+  doc.setFontSize(11);
+  doc.setFont("times", "normal");
+  doc.setTextColor(colors.textDark);
+  doc.text(`Name: ${MentorPic?.name || "Mentor"}`, mentorX + 15, y + 47);
+
+  // Circular Mentor Image
+  if (MentorPic?.pic) {
+    try {
+      const img64 = await loadImageAsBase64(MentorPic.pic);
+      const imgSize = 55;
+      const imgX = mentorX + cardWidth - imgSize - 15;
+      const imgY = y + 15;
+      doc.addImage(img64, "JPEG", imgX, imgY, imgSize, imgSize);
+    } catch {}
+  }
+
+  y += cardHeight + 30;
+
+  /* -----------------------------
+           DISCUSSION CARD
+  ------------------------------ */
+  drawCard(margin, y, contentWidth, 80);
+
+  doc.setFontSize(14);
+  doc.setFont("times", "bold");
+  doc.setTextColor(colors.primary);
+  doc.text("Discussion", margin + 15, y + 25);
+
+  doc.setFontSize(11);
+  doc.setFont("times", "normal");
+  doc.setTextColor(colors.textDark);
+  doc.text(`Topic: ${Discoussdata?.topic || "No Topic"}`, margin + 15, y + 47);
+  doc.text(`Coaching Option: ${Discoussdata?.coachingOption || "N/A"}`, margin + 15, y + 65);
+
+  y += 100;
+
+  /* -----------------------------
+         FEEDBACK SECTIONS
+  ------------------------------ */
+  const feedbackCardHeight = 120;
+
+  const renderSection = (title, text) => {
+    drawCard(margin, y, contentWidth, feedbackCardHeight);
+
+    doc.setFontSize(14);
+    doc.setFont("times", "bold");
+    doc.setTextColor(colors.primary);
+    doc.text(title, margin + 15, y + 25);
+
+    doc.setFontSize(11);
+    doc.setFont("times", "normal");
+    doc.setTextColor(colors.textDark);
+    const wrapped = doc.splitTextToSize(text, contentWidth - 30);
+    doc.text(wrapped, margin + 15, y + 45);
+
+    y += feedbackCardHeight + 25;
+  };
+
+  renderSection("Recommended", jsonData.Feedback.Recommended);
+  renderSection("Improvements", jsonData.Feedback.improvements);
+  renderSection("Summary", jsonData.Feedback.summary);
+
+  /* -----------------------------
+                FOOTER
+  ------------------------------ */
+  doc.setFontSize(10);
+  doc.setFont("times", "italic");
+  doc.setTextColor(colors.textLight);
+  doc.text("Generated by NextGen Tutor AI", margin, pageHeight - 30);
+  doc.text(new Date().toLocaleDateString(), pageWidth - margin - 60, pageHeight - 30);
+
+  /* -----------------------------
+              SAVE PDF
+  ------------------------------ */
+  doc.save("feedback-report.pdf");
+};
 
   return (
     <div>
