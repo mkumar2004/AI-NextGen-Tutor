@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as DicussRoom from "../DicussRoom.js";
+import type * as FullHistory from "../FullHistory.js";
 import type * as users from "../users.js";
 
 /**
@@ -26,6 +27,7 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   DicussRoom: typeof DicussRoom;
+  FullHistory: typeof FullHistory;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

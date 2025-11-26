@@ -47,3 +47,13 @@ export const Feedback = query({
         return await ctx.db.query("Discussroom").collect()
     }
 })
+
+export const GetAllFeedback = query({
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("Discussroom")
+      .filter((q) => q.neq(q.field("Feedback"), undefined))
+      .collect();
+  },
+});
+
