@@ -76,70 +76,63 @@ function MeetingUrl({ roomId, meetingData }) {
   if (!isVisible) return null;
 
  return (
-  <div className="p-6 mt-6 rounded-2xl shadow-xl border bg-white/40 backdrop-blur-xl w-full 
-                  animate-fadeSlide">
-
-    <div className="flex flex-col md:flex-row md:items-center gap-6 w-full">
-
-      {/* Image Animation */}
-      <div className="w-full md:w-auto flex justify-center md:justify-start 
-                      animate-scalePop">
+  <div className="p-4  rounded-xl shadow-md border bg-white/50 backdrop-blur-md w-full">
+    <div className="flex flex-col md:flex-row md:items-center gap-4 w-full">
+      
+      {/* Image */}
+      <div className="w-full md:w-auto flex justify-center md:justify-start">
         <img
           src={user?.pic}
           alt={user?.name}
-          className="w-28 h-28 md:w-24 md:h-24 rounded-2xl object-cover 
-                     shadow-lg border border-indigo-300"
+          className="w-16 h-16 md:w-18 md:h-18 rounded-xl object-cover shadow border border-indigo-200"
         />
       </div>
 
       {/* Right Section */}
-      <div className="flex-1 w-full space-y-3 animate-slideUp delay-150">
-
+      <div className="flex-1 w-full space-y-2">
+        
         {/* Title */}
-        <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r 
-                       from-indigo-600 to-purple-600 bg-clip-text text-transparent drop-shadow">
+        <h2 className="text-lg md:text-xl font-semibold bg-gradient-to-r 
+                       from-indigo-600 to-purple-600 bg-clip-text text-transparent">
           Meeting With {data?.Mentor}
         </h2>
 
         {/* Time + Expire */}
-        <div className="flex flex-wrap items-center gap-3 md:gap-4">
-          <span className="bg-gradient-to-r from-indigo-400/60 to-purple-400/60
-                           text-white px-3 py-1 rounded-full text-sm shadow">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="bg-indigo-400/60 text-white px-2 py-[2px] rounded-full text-xs">
             🕒 {currentTime}
           </span>
 
-          <span className="text-red-600 text-sm font-bold">
+          <span className="text-red-600 text-xs font-bold">
             Expires in: {String(Math.floor(timeLeft / 60)).padStart(2, '0')}:
             {String(timeLeft % 60).padStart(2, '0')}
           </span>
         </div>
 
-        <p className="text-gray-700 text-sm">Click the link to join:</p>
+        <p className="text-gray-700 text-xs">Click the link to join:</p>
 
         {/* URL Box */}
-        <div className="rounded-xl p-[2px] bg-gradient-to-r from-indigo-500 to-purple-600 
-                        shadow-md shadow-purple-300/40 w-full animate-growIn delay-200">
-          <div className="flex items-center gap-3 justify-between bg-white/20 backdrop-blur-lg 
-                          px-4 py-3 rounded-xl border border-white/30 w-full">
-
-            <span className="font-mono text-[12px] md:text-sm text-white truncate w-full md:w-auto">
+        <div className="rounded-lg p-[1.5px] bg-gradient-to-r from-indigo-500 to-purple-500 shadow-sm w-full">
+          <div className="flex items-center gap-2 justify-between bg-white/20 backdrop-blur-lg px-3 py-2 rounded-lg border border-white/20">
+            <span className="font-mono text-[10px] md:text-xs text-white truncate w-full">
               {meetingUrl}
             </span>
 
             <Button
               size="sm"
               onClick={handleCopy}
-              className="shrink-0 bg-white/30 hover:bg-white/50 backdrop-blur-md 
-                         text-indigo-900 font-semibold border border-white/40 shadow">
+              className="shrink-0 bg-white/30 hover:bg-white/50 text-indigo-900 border border-white/40"
+            >
               {copied ? "Copied!" : "Copy"}
             </Button>
-
           </div>
         </div>
 
       </div>
     </div>
   </div>
+
+
 );
 
 

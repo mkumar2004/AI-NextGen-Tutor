@@ -8,7 +8,6 @@ import Image from 'next/image';
 import { UserButton } from '@stackframe/stack';
 import { Button } from '@/components/ui/button';
 import Vapi from '@vapi-ai/web';
-import axios from 'axios';
 export const runtime = "nodejs";
 import { useUser } from '@stackframe/stack'
 import Pdf from '@/app/(main)/_components/Pdf';
@@ -280,49 +279,9 @@ function DiscussionRoom() {
 
     setEnableMic(false);
     setFeedBack(true);
-    // const feedbackData = await feedbackHandler();
 
-    // UpdateConversion({
-    //   id: Discussiondata._id,
-    //   coversation: messages,
-    //   Feedback: feedbackData
-    // })
-
-    // console.log(' Stopped');
     setInterimText('');
   };
-
-  // const feedbackHandler = async () => {
-  //   try {
-  //     const res = await axios.post("/api/feedback", {
-  //       conversation: messages,
-  //     });
-
-  //     console.log("Feedback API response:", res.data.feedback);
-
-  //     let feedbackData = res.data.feedback;
-
-  //     // If it's a string with code blocks, clean and parse it
-  //     if (typeof feedbackData === 'string') {
-  //       // Remove markdown code blocks
-  //       feedbackData = feedbackData
-  //         .replace(/```json\s*/g, '')
-  //         .replace(/```\s*/g, '')
-  //         .trim();
-
-  //       // Parse to JSON
-  //       feedbackData = JSON.parse(feedbackData);
-  //     }
-
-  //     // Return the entire object (with Feedback wrapper)
-  //     return feedbackData;
-
-  //   } catch (err) {
-  //     console.log("Feedback API error:", err.response?.data || err);
-  //     return null;
-  //   }
-  // };
-
   return (
 
     <div>
@@ -358,10 +317,9 @@ function DiscussionRoom() {
 
         {/* PDF button outside card, aligned to right */}
         <div className="flex items-start">
-          {/* {feedback && messages.length > 0 && (
+          {feedback && messages.length > 0 && (
             <Pdf message={messages} Discoussdata={Discussiondata} />
-          )} */}
-              <Pdf message={messages} Discoussdata={Discussiondata} />
+          )}
         </div>
       </div>
 
