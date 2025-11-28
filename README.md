@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 NextGen Placement – AI-Powered SaaS for College Placement & Career Readiness  
+A modern SaaS platform built using **Next.js**, **Convex backend**, and **AI Agents** (via OpenRouter / any OpenAI-compatible LLM).  
+Designed for **colleges, placement cells, and students** to improve hiring outcomes through automation and intelligent workflows.
 
-## Getting Started
+---
 
-First, run the development server:
+# 📘 Overview
+**NextGen Placement** helps colleges automate placement workflows:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Student profiling  
+- Resume scoring  
+- Mock interviews  
+- Job-role matching  
+- Admin analytics & dashboards  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All powered by a **scalable serverless backend (Convex)** and **LLM-driven AI agents**.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 🧩 Problem & Solution
 
-## Learn More
+## ❌ The Problem
+- Manual student shortlisting  
+- Weak resume feedback loops  
+- Students unprepared for interviews  
+- Recruiters struggle to filter candidates  
+- Placement teams lack analytics  
 
-To learn more about Next.js, take a look at the following resources:
+## ✅ The Solution
+- AI-generated resume corrections  
+- Automated job matching using skill scoring  
+- Mock interview chatbot  
+- Placement dashboards for staff  
+- Convex backend for real-time data access  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# ⚡ Features
+### Students
+- ✨ Create profiles  
+- 📄 Upload resumes  
+- 🤖 AI resume evaluation  
+- 🎤 AI mock interviews  
+- 🔍 Job recommendations  
 
-## Deploy on Vercel
+### College/Placement Cell
+- 📊 Dashboard & Insights  
+- 🧪 Student performance tracking  
+- 📝 Job posting management  
+- 🔎 Auto-eligibility & shortlisting  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Recruiters
+- 🎯 View shortlisted candidates  
+- 📈 Skill-score visualizations  
+- 🗂 Compare candidate profiles  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+# 🏗 System Architecture
+               ┌──────────────────────────────┐
+               │          Next.js              │
+               │  Frontend (Students/Admin)    │
+               └───────────────┬──────────────┘
+                               │
+                               ▼
+                     ┌─────────────────┐
+                     │    Convex DB    │
+                     │  Backend APIs   │
+                     └────────┬────────┘
+                              │
+                              ▼
+                 ┌──────────────────────────┐
+                 │      AI Agent Layer      │
+                 │ (Node.js Server Adapter) │
+                 └──────────┬──────────────┘
+                            │
+                            ▼
+              ┌──────────────────────────────┐
+              │ OpenRouter / OpenAI / LLMs   │
+              │ Model Provider Gateway       │
+              └──────────────────────────────┘
+
+---
+
+# 🔗 AI Integration – OpenRouter  
+Used for:
+- Resume analysis  
+- Mock interview  
+- Skill assessment  
+- Recommendations  
+
+**OpenRouter Docs:** https://openrouter.ai/docs
+
+---
+
+# 🔧 Environment Variables (Frontend + Backend)
+## 📌 Root `.env.local`
+NEXT_PUBLIC_CONVEX_URL=https://your-convex-url.convex.cloud
+
+NEXT_PUBLIC_OPENROUTER_URL=https://openrouter.ai/api/v1/chat/completions
+
+OPENROUTER_API_KEY=your_openrouter_api_key
+NEXT_PUBLIC_APP_ENV=local
+
+CONVEX_SITE_URL=http://localhost:3000
+
+NODE_ENV=development
+
+
+
+
+
+
