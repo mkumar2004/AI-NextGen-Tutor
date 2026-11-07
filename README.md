@@ -1,256 +1,183 @@
-<![CDATA[<div align="center">
+<div align="center">
 
-<img src="./public/homeicon.svg" alt="NextGen Tutor Logo" width="90" />
+<img src="https://raw.githubusercontent.com/mkumar2004/AI-NextGen-Tutor/main/public/homeicon.svg" alt="NextGen Tutor Logo" width="100" height="100" />
 
-# NextGen Tutor
+# ⚡ NextGen Tutor
 
-### 🎙️ AI-Powered Real-Time Voice Interview Coaching Platform
+### 🎙️ *Next-Generation Real-Time Voice AI Interview Coaching Platform*
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?logo=next.js&logoColor=white)](https://nextjs.org/)
-[![Convex](https://img.shields.io/badge/Convex-Backend-orange?logo=convex)](https://convex.dev/)
-[![Gemini](https://img.shields.io/badge/Google-Gemini%202.5-blue?logo=google)](https://ai.google.dev/)
-[![Stack Auth](https://img.shields.io/badge/Auth-Stack%20Auth-purple)](https://stack-auth.com/)
-[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+<br/>
 
-**[🚀 Live Demo](https://nextgen-tutor.vercel.app) · [📂 GitHub](https://github.com/mkumar2004/AI-NextGen-Tutor) · [🐛 Report a Bug](https://github.com/mkumar2004/AI-NextGen-Tutor/issues)**
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Convex](https://img.shields.io/badge/Convex-Backend-EE342F?style=for-the-badge&logo=convex&logoColor=white)](https://convex.dev/)
+[![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![Stack Auth](https://img.shields.io/badge/Stack%20Auth-OAuth-6366F1?style=for-the-badge)](https://stack-auth.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge)](LICENSE)
+
+<br/>
+
+[🌐 **Live Demo**](https://nextgen-tutor.vercel.app) • [📂 **GitHub Repo**](https://github.com/mkumar2004/AI-NextGen-Tutor) • [🐛 **Report Bug**](https://github.com/mkumar2004/AI-NextGen-Tutor/issues) • [✨ **Request Feature**](https://github.com/mkumar2004/AI-NextGen-Tutor/issues)
 
 </div>
 
 ---
 
-## 📌 Overview
+## 📖 Overview
 
-**NextGen Tutor** is a modern AI SaaS platform that enables candidates to master technical and behavioral interviews through **real-time voice AI coaching sessions**. Powered by **Google Gemini 2.5 Flash** and the native **Web Speech API**, it conducts live mock interviews, grades answers instantly, and delivers comprehensive PDF feedback reports.
+**NextGen Tutor** is a modern full-stack AI SaaS platform designed to help developers, students, and job seekers master technical and behavioral interviews through **natural, real-time voice conversations**. 
 
-> Built for developers, students, and professionals preparing for FAANG-tier and competitive job interviews.
+Powered by **Google Gemini 2.5 Flash** and the **Web Speech API**, NextGen Tutor simulates live interviewers that listen, reply with natural voice, evaluate answers in real-time, generate automated scoring metrics, and produce downloadable PDF interview evaluations.
 
 ---
 
-## ✨ Features
+## 🌟 Key Features
 
-| Feature | Description |
-|---|---|
-| 🎙️ **Real-Time Voice AI** | Live voice sessions powered by Gemini 2.5 Flash + Web Speech API |
-| 🤖 **Multi-Persona AI Coaches** | Choose from 4 specialized AI mentors with distinct voices |
-| 📅 **Dynamic & Scheduled Meetings** | Create instant sessions or schedule future meetings (15m–60m) |
-| 🔔 **Convex Notifications** | Real-time meeting creation and schedule alerts |
-| 📄 **PDF Reports** | Auto-generated session transcripts and AI feedback as PDFs |
-| 📊 **Analytics Dashboard** | Readiness scores, session history, and performance tracking |
-| 🗂️ **5 Coaching Tracks** | Lecture, Mock Interview, Q&A Practice, Language Skills, Wellness |
-| 🔐 **Google OAuth** | Secure authentication via Stack Auth |
-| 📱 **Fully Responsive** | Optimized for mobile, tablet and desktop |
+- 🎙️ **Real-Time Voice AI Simulation** — Low-latency voice discussions and mock tests with Gemini 2.5 Flash.
+- 🧑‍🏫 **Multi-Persona AI Coaches** — Choose between specialized mentors (Krish, Sarah, John, Emily) with tailored speech personas.
+- ⏱️ **Dynamic Meeting Duration & Expiry** — Flexible session setups (15m, 30m, 45m, 60m) with countdown badges and auto-expiry.
+- 📅 **Scheduled Meetings** — Switch seamlessly between instant rooms and scheduled future interview slots.
+- 🔔 **Convex Real-Time Notifications** — Instant notification drawer alerting you of newly scheduled or active rooms.
+- 📊 **Readiness & Telemetry Analytics** — Track technical clarity, communication scores, and improvement trends.
+- 📄 **Exportable PDF Reports** — Automatically download detailed transcript breakdowns and evaluation summaries.
+- 🔒 **Stack Auth (Google OAuth)** — Seamless authentication with protected routes via Next.js middleware.
+- 🎨 **Modern Glassmorphic UI** — Sleek dark landing page, custom slim scrollbar, and modern SaaS dashboard.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|---|---|
-| **Framework** | Next.js 16 (App Router, Turbopack) |
-| **AI Voice Engine** | Google Gemini 2.5 Flash + Web Speech API |
-| **Backend / DB** | Convex (real-time serverless database) |
-| **Authentication** | Stack Auth (Google OAuth) |
-| **Styling** | Tailwind CSS v4 |
-| **UI Components** | Radix UI + shadcn/ui |
-| **Icons** | Lucide React |
-| **PDF Generation** | jsPDF + jsPDF-AutoTable |
-| **Deployment** | Vercel |
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────┐
-│    Next.js 16 (App Router)          │
-│    Landing · Dashboard · Room       │
-└──────────────────┬──────────────────┘
-                   │
-         ┌─────────┴──────────┐
-         │                    │
-         ▼                    ▼
-┌────────────────┐   ┌────────────────────┐
-│  Convex DB     │   │  Gemini AI Engine  │
-│  Users         │   │  Voice Coaching    │
-│  Discussroom   │   │  Feedback Gen      │
-│  Notifications │   │  Transcript        │
-└────────────────┘   └────────────────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Stack Auth     │
-│  Google OAuth   │
-└─────────────────┘
+```text
+Frontend:       Next.js 16 (App Router + Turbopack), React 19, Tailwind CSS v4, Lucide Icons, Radix UI
+Backend & DB:   Convex (Real-time reactive cloud database & serverless mutations/queries)
+AI & Speech:    Google Gemini 2.5 Flash, Web Speech API (Recognition & SpeechSynthesis)
+Auth & Session: Stack Auth (Google OAuth2 + Session Tokens)
+Export & PDF:   jsPDF, jsPDF-AutoTable
+Deployment:     Vercel
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🗺️ Coaching Tracks
 
-### Prerequisites
+| Track | Tag | Focus Area |
+| :--- | :--- | :--- |
+| 🎓 **Lecture on Topic** | `Comprehensive` | Detailed concept deep dives and tech architecture walkthroughs |
+| 💼 **Mock Interview** | `Live Simulation` | FAANG-style behavioral and technical live question loops |
+| ⚡ **Q&A Practice** | `Rapid Q&A` | Rapid-fire concept checks and core fundamentals testing |
+| 🗣️ **Language Skill** | `Fluency` | English articulation, verbal fluency, and professional pacing |
+| 🧘 **Medication & Wellness** | `Health` | Focus techniques, breath pacing, and anti-anxiety interview prep |
 
-- Node.js 18+
-- A [Convex](https://convex.dev/) account
-- A [Stack Auth](https://stack-auth.com/) project
-- A [Google AI Studio](https://aistudio.google.com/) Gemini API key
+---
 
-### 1. Clone the Repository
+## ⚡ Quick Start
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/mkumar2004/AI-NextGen-Tutor.git
 cd AI-NextGen-Tutor
 ```
 
-### 2. Install Dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Configure Environment Variables
+### 3. Setup environment variables
+
+Create a `.env.local` file by copying the provided template:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Fill in your keys in `.env.local` (see [Environment Variables](#-environment-variables) below).
+Fill in your configuration:
 
-### 4. Set Up Convex Backend
+```env
+# Convex Backend
+CONVEX_DEPLOYMENT=dev:your-deployment-name
+NEXT_PUBLIC_CONVEX_URL=https://your-deployment-name.convex.cloud
+
+# Stack Auth
+NEXT_PUBLIC_STACK_PROJECT_ID=your_stack_project_id
+NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=pck_your_publishable_key
+STACK_SECRET_SERVER_KEY=ssk_your_secret_key
+
+# Google Gemini API
+GEMINI_API_KEY=your_gemini_api_key
+
+# Application URL
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+### 4. Push Convex schema & functions
 
 ```bash
 npx convex dev --once
 ```
 
-This pushes your schema and functions to your Convex cloud deployment.
-
-### 5. Run the Development Server
+### 5. Start the development server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [`http://localhost:3000`](http://localhost:3000) in your browser.
 
 ---
 
-## 🔑 Environment Variables
+## 📁 Project Architecture
 
-Create a `.env.local` file at the project root with the following keys:
-
-```env
-# Convex Database
-CONVEX_DEPLOYMENT=dev:your-deployment-name
-NEXT_PUBLIC_CONVEX_URL=https://your-deployment-name.convex.cloud
-
-# Stack Auth (https://stack-auth.com)
-NEXT_PUBLIC_STACK_PROJECT_ID=your_stack_project_id
-NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=pck_your_key
-STACK_SECRET_SERVER_KEY=ssk_your_key
-
-# Google Gemini API (https://aistudio.google.com)
-GEMINI_API_KEY=your_gemini_api_key
-
-# OpenRouter (optional fallback)
-OPENROUTER_API_KEY=sk-or-v1-your_key
-
-# Groq (optional fast inference)
-GROQ_API_KEY=gsk_your_key
-
-# App URL
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-GITHUB_URL=https://github.com/mkumar2004/AI-NextGen-Tutor
-```
-
-> See [`.env.example`](.env.example) for the full template.
-
----
-
-## 📂 Project Structure
-
-```
+```text
 AI-NextGen-Tutor/
-├── convex/                   # Convex backend functions & schema
-│   ├── schema.js             # DB tables: Users, Discussroom, Notifications
-│   ├── DicussRoom.jsx        # Meeting CRUD, Notifications
-│   ├── FullHistory.jsx       # Session history queries
-│   └── users.js              # User management
-│
-├── public/                   # Static assets & AI coach images
-│
+├── convex/                   # Convex cloud backend schema, queries & mutations
+│   ├── schema.js             # Tables: Users, Discussroom, Notifications
+│   ├── DicussRoom.jsx        # Room creation, dynamic duration, notifications
+│   ├── FullHistory.jsx       # User history queries
+│   └── users.js              # User profiles & credit state
+├── public/                   # Static icons, avatars, and assets
 ├── src/
 │   ├── app/
-│   │   ├── (main)/dashboard/ # Dashboard, History, Feedback, Discussion Room
-│   │   ├── api/              # Gemini voice, AI feedback, chat routes
-│   │   ├── page.jsx          # Landing page
-│   │   ├── layout.js         # Root layout + metadata
-│   │   └── globals.css       # Global styles + scrollbar
-│   │
+│   │   ├── (main)/dashboard/ # Career dashboard, discussion room, history, feedback
+│   │   ├── api/              # AI routes & Gemini voice endpoints
+│   │   ├── globals.css       # Global styles & custom light gray scrollbar
+│   │   ├── layout.js         # Root layout with title & logo favicon metadata
+│   │   └── page.jsx          # Dark AI SaaS Landing Page
 │   ├── components/
+│   │   ├── features/         # FeaturesAssistants, MeetingUrl, UserInputDialog, Pdf
 │   │   ├── layout/           # AppHeader, AppSidebar, NotificationDrawer
-│   │   ├── features/
-│   │   │   ├── dashboard/    # FeaturesAssistants, MeetingUrl, UserInputDialog
-│   │   │   ├── discussion/   # Pdf report generator
-│   │   │   └── feedback/     # FeedbackCard
-│   │   └── ui/               # shadcn/ui components
-│   │
-│   └── constants/            # STAFF_MEMBERS, EXPERT_ASSISTANTS
-│
+│   │   └── ui/               # Reusable UI primitives
+│   └── constants/            # Mentors and coaching track configurations
 ├── middleware.jsx             # Stack Auth route protection
-├── stack.js                  # Stack Auth server config
-├── .env.example              # Environment variable template
-└── package.json
+└── stack.js                  # Stack server configuration
 ```
-
----
-
-## 🎯 Coaching Tracks
-
-| Track | Description | Tag |
-|---|---|---|
-| 🎓 **Lecture on Topic** | Deep-dive technical explanations | Comprehensive |
-| 🎭 **Mock Interview** | Live simulation with real-time scoring | Live Simulation |
-| ❓ **Q&A Practice** | Rapid fire question & answer loops | Rapid Q&A |
-| 🗣️ **Language Skill** | Communication and fluency coaching | Communication |
-| 🧘 **Medication / Wellness** | Focus and stress management guidance | Wellness & Health |
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Resume upload & AI scoring
-- [ ] Multi-language interview support
-- [ ] Leaderboard & peer comparison
-- [ ] Email reminders for scheduled meetings
-- [ ] Admin analytics panel
-- [ ] Mobile app (React Native)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request.
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/mkumar2004/AI-NextGen-Tutor/issues).
 
-```bash
-# Fork → Clone → Branch → Commit → PR
-git checkout -b feature/your-feature-name
-git commit -m "feat: add your feature"
-git push origin feature/your-feature-name
-```
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'feat: Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-## 📄 License
+## 📜 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [MK TECH TAMIZHA](https://github.com/mkumar2004)
+Made with ❤️ by [**MK TECH TAMIZHA**](https://github.com/mkumar2004)
 
-⭐ **Star this repo if you found it helpful!**
+⭐ *If you like this project, don't forget to give it a star!* ⭐
 
 </div>
-]]>
